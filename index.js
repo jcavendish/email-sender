@@ -10,7 +10,7 @@ app.use(cors());
 app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 
 //port at which the server will run
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 //create end point
 app.post("/", (request, response) => {
