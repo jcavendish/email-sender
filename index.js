@@ -20,6 +20,11 @@ app.post("/", (request, response) => {
   response.send("E-mail sent");
 });
 
+//create end point
+app.get("/ping", (request, response) => {
+  response.send({ message: "pong" });
+});
+
 //start server and listen for the request
 app.listen(port, () =>
   //a callback that will be called as soon as server start listening
