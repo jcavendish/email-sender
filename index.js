@@ -26,7 +26,7 @@ app.get("/ping", (request, response) => {
 });
 
 //create end point
-app.get("/debug", (request, response) => {
+app.post("/debug", (request, response) => {
   console.log(request);
 });
 
