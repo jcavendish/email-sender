@@ -25,6 +25,11 @@ app.get("/ping", (request, response) => {
   response.send({ message: "pong" });
 });
 
+//create end point
+app.get("/debug", (request, response) => {
+  console.log(request);
+});
+
 //start server and listen for the request
 app.listen(port, () =>
   //a callback that will be called as soon as server start listening
