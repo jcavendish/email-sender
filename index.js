@@ -14,10 +14,37 @@ const port = process.env.PORT || 4000;
 
 //create end point
 app.post("/", (request, response) => {
-  const { credentials, from, to } = request.body;
+  const { subject, email, p1, p2 } = request.query;
+  const [ order ] = request.body.orders;
+  const { 
+    client_marketing_consent, 
+    restaurant_name, 
+    client_first_name, 
+    client_email 
+  } = order;
 
-  sendEmailService().execute(credentials, { from, to });
-  response.send("E-mail sent");
+  if (!client_marketing_consent) {
+    response.status(500).send("Client did not consent with marketing");
+  }
+
+  await sendEmailService().execute(
+    { 
+      accessKeyId: p1, 
+      secretAccessKey: p2 
+    },
+    {
+      subject,
+      from: { 
+        name: restaurant_name, 
+        email 
+      }, 
+      to: { 
+        name: client_first_name, 
+        email: client_email 
+      }
+    });
+
+  response.send();
 });
 
 //create end point

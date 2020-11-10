@@ -5,16 +5,16 @@ function SendEmailService() {
   const templateFile = path.resolve(__dirname, "..", "views", "template.hbs");
 
   return {
-    execute: async (credentials, { from, to }) => {
+    execute: async (credentials, { subject, from, to }) => {
       await emailProvider(credentials).sendEmail({
         to,
         from,
-        subject: "[GoBarber] Recuperação de senha",
+        subject,
         templateData: {
           file: templateFile,
           variables: {
-            name: from.name,
-            senderName: from.signature
+            name: to.name,
+            senderName: from.name
           }
         }
       });
