@@ -15,9 +15,8 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 const port = process.env.PORT || 4000;
 
 //create end point
-app.post("/", async (request, response) => {
-  const { subject, email } = request.query;
-
+app.post("/:provider", async (request, response) => {
+  const { provider } = request.params;
   const [ order ] = request.body.orders;
   
   const { 
@@ -33,10 +32,9 @@ app.post("/", async (request, response) => {
   try {
     await sendEmailService().execute(
       {
-        subject,
+        provider, 
         from: { 
           name: restaurant_name, 
-          email 
         }, 
         to: { 
           name: client_first_name, 
