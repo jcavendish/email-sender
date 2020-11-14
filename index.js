@@ -1,3 +1,5 @@
+require("dotenv/config");
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -13,8 +15,8 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 const port = process.env.PORT || 4000;
 
 //create end point
-app.post("/", (request, response) => {
-  const { subject, email, p1, p2 } = request.query;
+app.post("/", async (request, response) => {
+  const { subject, email } = request.query;
   const [ order ] = request.body.orders;
   const { 
     client_marketing_consent, 
@@ -26,12 +28,8 @@ app.post("/", (request, response) => {
   if (!client_marketing_consent) {
     response.status(500).send("Client did not consent with marketing");
   }
-
+  try {
   await sendEmailService().execute(
-    { 
-      accessKeyId: p1, 
-      secretAccessKey: p2 
-    },
     {
       subject,
       from: { 
@@ -44,7 +42,11 @@ app.post("/", (request, response) => {
       }
     });
 
-  response.send();
+    response.send();
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
+  }
 });
 
 //create end point

@@ -5,15 +5,15 @@ function SendEmailService() {
   const templateFile = path.resolve(__dirname, "..", "views", "template.hbs");
 
   return {
-    execute: async (credentials, { subject, from, to }) => {
-      await emailProvider(credentials).sendEmail({
+    execute: async ({ subject, from, to }) => {
+      await emailProvider().sendEmail({
         to,
         from,
         subject,
         templateData: {
           file: templateFile,
           variables: {
-            name: to.name,
+            clientName: to.name,
             senderName: from.name
           }
         }

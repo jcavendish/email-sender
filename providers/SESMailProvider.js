@@ -1,22 +1,23 @@
 const aws = require("aws-sdk");
 const nodemailer = require("nodemailer");
 const emailTemplateProvider = require("./HandlebarsTemplateProvider");
+const mailConfig = require("../config/mail");
 
-function SESEmailProvider({ accessKeyId, secretAccessKey }) {
+
+function SESEmailProvider() {
   const client = nodemailer.createTransport({
     SES: new aws.SES({
       apiVersion: "2010-12-01",
       region: "eu-west-1",
       credentials: {
-        accessKeyId,
-        secretAccessKey
+        accessKeyId: mailConfig.accessKeyId,
+        secretAccessKey: mailConfig.secretAccessKey
       }
     })
   });
 
   return {
     sendEmail: async ({ to, from, subject, templateData }) => {
-      console.log(to, from);
       await client.sendMail({
         from: {
           name: from.name,
