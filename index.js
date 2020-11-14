@@ -17,7 +17,9 @@ const port = process.env.PORT || 4000;
 //create end point
 app.post("/", async (request, response) => {
   const { subject, email } = request.query;
+
   const [ order ] = request.body.orders;
+  
   const { 
     client_marketing_consent, 
     restaurant_name, 
@@ -29,18 +31,18 @@ app.post("/", async (request, response) => {
     response.status(500).send("Client did not consent with marketing");
   }
   try {
-  await sendEmailService().execute(
-    {
-      subject,
-      from: { 
-        name: restaurant_name, 
-        email 
-      }, 
-      to: { 
-        name: client_first_name, 
-        email: client_email 
-      }
-    });
+    await sendEmailService().execute(
+      {
+        subject,
+        from: { 
+          name: restaurant_name, 
+          email 
+        }, 
+        to: { 
+          name: client_first_name, 
+          email: client_email 
+        }
+      });
 
     response.send();
   } catch (error) {
