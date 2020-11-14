@@ -1,53 +1,23 @@
 require("dotenv/config");
+require("./connection");
 
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const sendEmailService = require("./services/SendEmailService");
+
+const orderController = require("./controllers/OrderController");
+const restaurantController = require("./controllers/RestaurantController");
 
 //create express app
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 
 //port at which the server will run
 const port = process.env.PORT || 4000;
 
 //create end point
-app.post("/:provider", async (request, response) => {
-  const { provider } = request.params;
-  const [ order ] = request.body.orders;
-  
-  const { 
-    client_marketing_consent, 
-    restaurant_name, 
-    client_first_name, 
-    client_email 
-  } = order;
-
-  if (!client_marketing_consent) {
-    response.status(500).send("Client did not consent with marketing");
-  }
-  try {
-    await sendEmailService().execute(
-      {
-        provider, 
-        from: { 
-          name: restaurant_name, 
-        }, 
-        to: { 
-          name: client_first_name, 
-          email: client_email 
-        }
-      });
-
-    response.send();
-  } catch (error) {
-    console.log(error);
-    response.status(500).send();
-  }
-});
+app.post("/orders", orderController.create);
+app.post("/restaurants", restaurantController.create);
 
 //create end point
 app.get("/ping", (request, response) => {
