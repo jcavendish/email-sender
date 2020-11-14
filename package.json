@@ -1,5 +1,5 @@
 {
-  "name": "setup-basic-nodejs-server",
+  "name": "inventary-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
