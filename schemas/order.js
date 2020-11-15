@@ -31,7 +31,6 @@ const orderSchema = new mongoose.Schema({
           id: Number,
           name: String,
           group_name: String,
-          type: String,
           type_id: Number,
           quantity: Number,
           price: Number
