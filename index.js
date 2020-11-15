@@ -26,7 +26,7 @@ app.get("/ping", (request, response) => {
 
 //create end point
 app.post("/debug", (request, response) => {
-  request.body.orders.forEach((order) => console.log(order));
+  console.log(request.body);
   response.send();
 });
 
