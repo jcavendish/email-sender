@@ -3,7 +3,7 @@ const restaurantRepository = require("../repositories/RestaurantRepository");
 module.exports = {
   create: async (request, response) => {
     try {
-      const restaurant = await restaurantRepository().create(request.query);
+      const restaurant = await restaurantRepository().create(request.body);
 
       response.send(`<p>Restaurant with key: ${restaurant.restaurant_key} successfuly added.</p>`);
     } catch (err) {
