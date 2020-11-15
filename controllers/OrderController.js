@@ -4,7 +4,7 @@ const sendEmailService = require("../services/SendEmailService");
 module.exports = {
   create: async (request, response) => {
     try {
-      const order = await createOrderService().execute(request.body);
+      const order = await createOrderService().execute(request.body.orders[0]);
 
       await sendEmailService().execute(
         {
