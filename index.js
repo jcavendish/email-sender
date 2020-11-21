@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const orderController = require("./controllers/OrderController");
 const restaurantController = require("./controllers/RestaurantController");
+const reportingController = require('./controllers/ReportingController');
 
 //create express app
 const app = express();
@@ -18,6 +19,7 @@ const port = process.env.PORT || 4000;
 //create end point
 app.post("/orders", orderController.create);
 app.post("/restaurants", restaurantController.create);
+app.post("/reports/:key", reportingController.create);
 
 //create end point
 app.get("/ping", (request, response) => {
