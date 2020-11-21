@@ -20,7 +20,7 @@ const port = process.env.PORT || 4000;
 //create end point
 app.post("/orders", orderController.create);
 app.post("/restaurants", restaurantController.create);
-app.post("/reports/:key", reportingController.create);
+app.get("/reports/:key", reportingController.create);
 app.get("/restaurants/:key/orders", restaurantOrderController.index);
 
 //create end point
