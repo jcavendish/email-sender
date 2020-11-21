@@ -25,7 +25,7 @@ app.get("/restaurants/:key/orders", restaurantOrderController.index);
 
 //create end point
 app.get("/ping", (request, response) => {
-  response.send({ message: "pong" });
+  response.send("pong");
 });
 
 //create end point
