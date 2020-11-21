@@ -13,6 +13,9 @@ function OrderRepository() {
     },
     async findByOrderId(id) {
       return await Order.findOne({id}).exec();
+    },
+    async findByRestaurantKey(key) {
+      return await Order.find({restaurant_key: key}).exec();
     }
   }
 }

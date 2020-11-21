@@ -1,7 +1,7 @@
 const restaurantRepository = require("../repositories/RestaurantRepository");
 
 module.exports = {
-  create: async (request, response) => {
+  async create(request, response) {
     try {
       const restaurant = await restaurantRepository().create(request.body);
 
