@@ -75,6 +75,8 @@ function googleSpreadsheetProvider() {
     async append(spreadsheetId, data) {
       const res = await sheets.spreadsheets.values.append({
         spreadsheetId,
+        range: 'A1',
+        valueInputOption: 'USER_ENTERED',
         requestBody: {
           values: data,
         },
