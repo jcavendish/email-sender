@@ -38,12 +38,13 @@ function googleSpreadsheetProvider() {
     init() {
       return authorizeUrl;
     },
-    async authenticate(code) {
+    async authenticate(code, callback) {
       // Check if we have previously stored a token.
       try {
         const token = await fs.promises.readFile(TOKEN_PATH); 
         console.log(`Set Token from file: ${token}`)
         client.setCredentials(JSON.parse(token));
+        callback();
       } catch {
         getNewToken();
       }
@@ -55,6 +56,7 @@ function googleSpreadsheetProvider() {
           }
           console.log(`Set new Token: ${tokens}`)
           client.setCredentials(tokens);
+          callback();
           // Store the token to disk for later program executions
           try {
             await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
@@ -65,8 +67,7 @@ function googleSpreadsheetProvider() {
         })
       }
     },
-    async create(code) {
-      this.authenticate(code);
+    async create() {
       const resource = {
         properties: {
           title: "Relatório de vendas"

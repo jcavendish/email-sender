@@ -5,7 +5,8 @@ module.exports = {
     return response.send(googleSpreadsheetProvider().init());
   },
   async create(request, response) {
-    await googleSpreadsheetProvider().create(request.query.code);
+    const provider = googleSpreadsheetProvider();
+    await provider.authenticate(request.query.code, provider.create);
     return response.sendStatus(201);
   }
 }
