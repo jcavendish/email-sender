@@ -2,11 +2,12 @@ const googleSpreadsheetProvider = require('../providers/GoogleSpreadsheetProvide
 
 module.exports = {
   init(request, response) {
-    return response.send(googleSpreadsheetProvider().init());
+    const authUrl = googleSpreadsheetProvider().init();
+    return response.send({authUrl});
   },
   async create(request, response) {
     const provider = googleSpreadsheetProvider();
-    await provider.authenticate(request.query.code, provider.create);
-    return response.sendStatus(201);
+    const spreadsheetUrl = await provider.authenticate(request.query.code, provider.create);
+    return response.send({spreadsheetUrl});
   }
 }

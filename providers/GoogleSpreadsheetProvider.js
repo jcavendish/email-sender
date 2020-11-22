@@ -44,9 +44,9 @@ function googleSpreadsheetProvider() {
         const token = await fs.promises.readFile(TOKEN_PATH); 
         console.log(`Set Token from file: ${token}`)
         client.setCredentials(JSON.parse(token));
-        callback();
+        return callback();
       } catch {
-        getNewToken();
+        return getNewToken();
       }
       async function getNewToken() {
         client.getToken(code, async (err, tokens) => {
@@ -56,14 +56,11 @@ function googleSpreadsheetProvider() {
           }
           console.log(`Set new Token: ${tokens}`)
           client.setCredentials(tokens);
-          callback();
           // Store the token to disk for later program executions
-          try {
-            await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
-            console.log('Token stored to', TOKEN_PATH);
-          } catch (error) {
-            console.error(error);
-          }
+          await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
+          console.log('Token stored to', TOKEN_PATH);
+
+          return callback();
         })
       }
     },
@@ -75,18 +72,14 @@ function googleSpreadsheetProvider() {
       }
 
       const sheets = google.sheets("v4");
-      await sheets.spreadsheets.create({
+
+      const response = await sheets.spreadsheets.create({
         resource,
         fields: 'spreadsheetId',
         auth: client
-      }, (err, spreadsheet) =>{
-        if (err) {
-          throw new Error(err.message);
-        } else {
-          console.log(`Spreadsheet ID: ${spreadsheet.spreadsheetId}`);
-          return spreadsheet.spreadsheetId;
-        }
-      });
+      })
+
+      return response.data.spreadsheetUrl;
     }
   }
 }
