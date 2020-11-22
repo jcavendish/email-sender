@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+const fs = require('fs');
 const {google} = require('googleapis');
 const { 
   client_id,
@@ -12,6 +14,9 @@ const scopes = [
   'https://www.googleapis.com/auth/drive.file',
   'https://www.googleapis.com/auth/spreadsheets',
 ];
+
+const TOKEN_PATH = path.join(__dirname, '..', 'config', 'token.json');
+
 // Open an http server to accept the oauth callback. In this
 // simple example, the only request to our webserver is to
 // /oauth2callback?code=<code>
@@ -34,13 +39,25 @@ function googleSpreadsheetProvider() {
       return authorizeUrl;
     },
     authenticate(code) {
-      client.getToken(code, (err, tokens) => {
-        if (err) {
-          console.error('Error getting oAuth tokens:');
-          throw err;
-        }
-        client.credentials = tokens;
-      })
+      // Check if we have previously stored a token.
+      fs.readFile(TOKEN_PATH, (err, token) => {
+        if (err) return getNewToken();
+        client.setCredentials(JSON.parse(token));
+      });
+      function getNewToken() {
+        client.getToken(code, (err, token) => {
+          if (err) {
+            console.error('Error getting oAuth tokens:');
+            throw err;
+          }
+          client.setCredentials(token);
+          // Store the token to disk for later program executions
+          fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+            if (err) return console.error(err);
+            console.log('Token stored to', TOKEN_PATH);
+          });
+        })
+      }
     },
     async create(code) {
       this.authenticate(code);
@@ -56,9 +73,7 @@ function googleSpreadsheetProvider() {
         fields: 'spreadsheetId',
       }, (err, spreadsheet) =>{
         if (err) {
-          // Handle error.
-          console.log(err);
-          return;
+          throw new Error(err.message);
         } else {
           console.log(`Spreadsheet ID: ${spreadsheet.spreadsheetId}`);
           return spreadsheet.spreadsheetId;
