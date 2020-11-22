@@ -3,8 +3,9 @@ const createReportService = require("../services/CreateReportService");
 module.exports = {
   async create(request, response) {
     const { restaurantKey, spreadsheetId } = request.body;
+    const { code } = request.query;
     try {
-      await createReportService().execute(spreadsheetId, restaurantKey);
+      await createReportService().execute(code, spreadsheetId, restaurantKey);
 
       return response.send();
     } catch (err) {

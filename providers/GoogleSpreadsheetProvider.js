@@ -40,30 +40,22 @@ function googleSpreadsheetProvider() {
     init() {
       return authorizeUrl;
     },
-    async authenticate(code, callback) {
+    async authenticate(code) {
       // Check if we have previously stored a token.
       try {
         const token = await fs.promises.readFile(TOKEN_PATH); 
         console.log(`Set Token from file: ${token}`)
         client.setCredentials(JSON.parse(token));
-        callback();
       } catch {
         getNewToken();
       }
       async function getNewToken() {
-        client.getToken(code, async (err, tokens) => {
-          if (err) {
-            console.error('Error getting oAuth tokens:');
-            throw err;
-          }
-          console.log(`Set new Token: ${tokens}`)
-          client.setCredentials(tokens);
-          // Store the token to disk for later program executions
-          await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
-          console.log('Token stored to', TOKEN_PATH);
-
-          callback();
-        })
+        const tokens = await client.getToken(code);
+        console.log(`Set new Token: ${tokens}`)
+        client.setCredentials(tokens);
+        // Store the token to disk for later program executions
+        await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
+        console.log('Token stored to', TOKEN_PATH);
       }
     },
     async create() {

@@ -5,7 +5,7 @@ const orderRepository = require("../repositories/OrderRepository");
 
 function createOrderService() {
   return {
-    async execute(spreadsheetId, restaurantKey) {
+    async execute(provider, spreadsheetId, restaurantKey) {
       const orders = await orderRepository().findByRestaurantKey(restaurantKey);
 
       const copyItems =  orders.flatMap(order => order.items).map(item => {
@@ -61,8 +61,8 @@ function createOrderService() {
           order.total
         ]
       });
-      const provider = googleSpreadsheetProvider();
-      await provider.authenticate(null, provider.append(spreadsheetId, [titles, rows]));
+
+      await provider.append(spreadsheetId, [titles, rows]);
  //     return csvProvider().toCsv(parsedOrders);      
     }
   }
