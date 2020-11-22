@@ -56,13 +56,15 @@ function createOrderService() {
           order.price,
           order.total_item_price,
           order.quantity,
-          order.options,
+          JSON.stringify(order.options),
           order.total
         ]
       });
+
       const provider = googleSpreadsheetProvider();
       await provider.authenticate(code);
       await provider.append(spreadsheetId, [titles, rows]);
+    
     }
   }
 }
