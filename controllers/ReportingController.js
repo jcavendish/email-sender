@@ -1,11 +1,11 @@
-const { create } = require('handlebars');
 const createReportService = require("../services/CreateReportService");
 
 module.exports = {
   async create(request, response) {
-    const { key } = request.params;
+    const { restaurantKey, spreadsheetId } = request.body;
     try {
-      const report = await createReportService().execute(key);
+      const report = await createReportService().execute(spreadsheetId, restaurantKey);
+
       return response.send(report);
     } catch (err) {
       console.log(err);

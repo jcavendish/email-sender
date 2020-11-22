@@ -33,6 +33,8 @@ function googleSpreadsheetProvider() {
     access_type: 'offline',
     scope: scopes,
   });
+  google.options({auth:client})
+  const sheets = google.sheets("v4");
 
   return {
     init() {
@@ -71,15 +73,21 @@ function googleSpreadsheetProvider() {
         }
       }
 
-      const sheets = google.sheets("v4");
-
       const response = await sheets.spreadsheets.create({
         resource,
-        fields: 'spreadsheetId',
-        auth: client
+        fields: 'spreadsheetId'
       })
 
       return response.data.spreadsheetUrl;
+    },
+    async append(spreadsheetId, data) {
+      const res = await sheets.spreadsheets.values.append({
+        spreadsheetId,
+        requestBody: {
+          values: data,
+        },
+      });
+      return res.data;
     }
   }
 }

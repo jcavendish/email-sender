@@ -23,7 +23,7 @@ const port = process.env.PORT || 4000;
 //create end point
 app.post("/orders", orderController.create);
 app.post("/restaurants", restaurantController.create);
-app.get("/reports/:key", reportingController.create);
+app.post("/reports", reportingController.create);
 app.get("/restaurants/:key/orders", restaurantOrderController.index);
 app.get('/oauth2callback', spreadsheetController.create);
 app.get('/google/auth', spreadsheetController.init);
