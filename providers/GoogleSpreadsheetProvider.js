@@ -78,7 +78,7 @@ function googleSpreadsheetProvider() {
         fields: 'spreadsheetId'
       })
 
-      return response.data.spreadsheetUrl;
+      return response.data;
     },
     async append(spreadsheetId, data) {
       const res = await sheets.spreadsheets.values.append({
