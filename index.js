@@ -8,6 +8,9 @@ const orderController = require("./controllers/OrderController");
 const restaurantController = require("./controllers/RestaurantController");
 const reportingController = require('./controllers/ReportingController');
 const restaurantOrderController = require("./controllers/RestaurantOrderController");
+const { response } = require('express');
+const googleSpreadsheetProvider = require('./providers/GoogleSpreadsheetProvider');
+const spreadsheetController = require('./controllers/SpreadsheetController');
 
 //create express app
 const app = express();
@@ -22,6 +25,8 @@ app.post("/orders", orderController.create);
 app.post("/restaurants", restaurantController.create);
 app.get("/reports/:key", reportingController.create);
 app.get("/restaurants/:key/orders", restaurantOrderController.index);
+app.get('/oauth2callback', spreadsheetController.create);
+app.get('/google/auth', spreadsheetController.init);
 
 //create end point
 app.get("/ping", (request, response) => {

@@ -1,6 +1,7 @@
-const { options } = require('mongoose');
 const csvProvider = require("../providers/CsvProvider");
+const googleSpreadsheetProvider = require('../providers/GoogleSpreadsheetProvider');
 const orderRepository = require("../repositories/OrderRepository");
+
 
 function createOrderService() {
   return {
@@ -49,6 +50,7 @@ function createOrderService() {
         }
       })
 
+      googleSpreadsheetProvider().open();
       return csvProvider().toCsv(parsedOrders);      
     }
   }
