@@ -47,7 +47,7 @@ function googleSpreadsheetProvider() {
         console.log(`Set Token from file: ${token}`)
         client.setCredentials(JSON.parse(token));
       } catch {
-        getNewToken();
+        await getNewToken();
       }
       async function getNewToken() {
         const tokens = await client.getToken(code);
