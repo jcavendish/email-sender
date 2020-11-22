@@ -1,5 +1,4 @@
 const googleSpreadsheetProvider = require('../providers/GoogleSpreadsheetProvider');
-const createReportService = require("../services/CreateReportService");
 
 module.exports = {
   init(request, response) {

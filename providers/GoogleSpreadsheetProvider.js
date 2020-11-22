@@ -50,7 +50,7 @@ function googleSpreadsheetProvider() {
         await getNewToken();
       }
       async function getNewToken() {
-        const tokens = await client.getToken(code);
+        const { tokens } = await client.getToken(code);
         console.log(`Set new Token: ${tokens}`)
         client.setCredentials(tokens);
         // Store the token to disk for later program executions
