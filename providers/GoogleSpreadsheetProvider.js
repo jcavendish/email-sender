@@ -46,9 +46,9 @@ function googleSpreadsheetProvider() {
         const token = await fs.promises.readFile(TOKEN_PATH); 
         console.log(`Set Token from file: ${token}`)
         client.setCredentials(JSON.parse(token));
-        return callback();
+        callback();
       } catch {
-        return getNewToken();
+        getNewToken();
       }
       async function getNewToken() {
         client.getToken(code, async (err, tokens) => {
@@ -62,7 +62,7 @@ function googleSpreadsheetProvider() {
           await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
           console.log('Token stored to', TOKEN_PATH);
 
-          return callback();
+          callback();
         })
       }
     },
@@ -78,7 +78,7 @@ function googleSpreadsheetProvider() {
         fields: 'spreadsheetId'
       })
 
-      return response.data;
+      console.log(response.data);
     },
     async append(spreadsheetId, data) {
       const res = await sheets.spreadsheets.values.append({
@@ -87,7 +87,7 @@ function googleSpreadsheetProvider() {
           values: data,
         },
       });
-      return res.data;
+      console.log(res.data);
     }
   }
 }

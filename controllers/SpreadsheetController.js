@@ -7,7 +7,7 @@ module.exports = {
   },
   async create(request, response) {
     const provider = googleSpreadsheetProvider();
-    const spreadsheetUrl = await provider.authenticate(request.query.code, provider.create);
-    return response.send({spreadsheetUrl});
+    await provider.authenticate(request.query.code, provider.create);
+    return response.send();
   }
 }
