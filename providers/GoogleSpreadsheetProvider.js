@@ -71,6 +71,7 @@ function googleSpreadsheetProvider() {
       await sheets.spreadsheets.create({
         resource,
         fields: 'spreadsheetId',
+        auth: client
       }, (err, spreadsheet) =>{
         if (err) {
           throw new Error(err.message);
