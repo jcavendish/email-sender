@@ -38,15 +38,17 @@ function googleSpreadsheetProvider() {
     init() {
       return authorizeUrl;
     },
-    authenticate(code) {
+    async authenticate(code) {
       // Check if we have previously stored a token.
-      fs.readFile(TOKEN_PATH, (err, token) => {
+      try {
+        const token = await fs.promises.readFile(TOKEN_PATH); 
         console.log(`Set Token from file: ${token}`)
-        if (err) return getNewToken();
         client.setCredentials(JSON.parse(token));
-      });
-      function getNewToken() {
-        client.getToken(code, (err, tokens) => {
+      } catch {
+        getNewToken();
+      }
+      async function getNewToken() {
+        client.getToken(code, async (err, tokens) => {
           if (err) {
             console.error('Error getting oAuth tokens:');
             throw err;
@@ -54,10 +56,12 @@ function googleSpreadsheetProvider() {
           console.log(`Set new Token: ${tokens}`)
           client.setCredentials(tokens);
           // Store the token to disk for later program executions
-          fs.writeFile(TOKEN_PATH, JSON.stringify(tokens), (err) => {
-            if (err) return console.error(err);
+          try {
+            await fs.promises.writeFile(TOKEN_PATH, JSON.stringify(tokens));
             console.log('Token stored to', TOKEN_PATH);
-          });
+          } catch (error) {
+            console.error(error);
+          }
         })
       }
     },
