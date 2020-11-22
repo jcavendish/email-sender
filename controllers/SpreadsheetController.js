@@ -7,12 +7,11 @@ module.exports = {
     return response.send({authUrl});
   },
   async create(request, response) {
-    const { code, spreadsheetId, restaurantKey } = request.query;
+    const { code } = request.query;
     const provider = googleSpreadsheetProvider();
     await provider.authenticate(code);
     await provider.create();
-    await createReportService().execute(provider, spreadsheetId, restaurantKey);
 
-    return response.send();
+    return response.send({code});
   }
 }
