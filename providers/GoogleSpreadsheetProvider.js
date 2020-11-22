@@ -41,18 +41,20 @@ function googleSpreadsheetProvider() {
     authenticate(code) {
       // Check if we have previously stored a token.
       fs.readFile(TOKEN_PATH, (err, token) => {
+        console.log(`Set Token from file: ${token}`)
         if (err) return getNewToken();
         client.setCredentials(JSON.parse(token));
       });
       function getNewToken() {
-        client.getToken(code, (err, token) => {
+        client.getToken(code, (err, tokens) => {
           if (err) {
             console.error('Error getting oAuth tokens:');
             throw err;
           }
-          client.setCredentials(token);
+          console.log(`Set new Token: ${tokens}`)
+          client.setCredentials(tokens);
           // Store the token to disk for later program executions
-          fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+          fs.writeFile(TOKEN_PATH, JSON.stringify(tokens), (err) => {
             if (err) return console.error(err);
             console.log('Token stored to', TOKEN_PATH);
           });
