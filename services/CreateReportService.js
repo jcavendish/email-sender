@@ -1,10 +1,12 @@
-const googleSpreadsheetProvider = require('../providers/GoogleSpreadsheetProvider');
+const fs = require("fs");
+const upload = require('../config/upload');
+const csvProvider = require("../providers/CsvProvider");
 const orderRepository = require("../repositories/OrderRepository");
 
 
 function createOrderService() {
   return {
-    async execute(code, spreadsheetId, restaurantKey) {
+    async execute(restaurantKey) {
       const orders = await orderRepository().findByRestaurantKey(restaurantKey);
 
       const copyItems =  orders.flatMap(order => order.items).map(item => {
@@ -49,22 +51,9 @@ function createOrderService() {
         }
       })
 
-      const titles = ['Name', 'Price', 'Total Item Price', 'Quantity', 'Options', 'Total'];
-      const rows = parsedOrders.map(order => {
-        return [
-          order.name,
-          order.price,
-          order.total_item_price,
-          order.quantity,
-          JSON.stringify(order.options),
-          order.total
-        ]
-      });
-
-      const provider = googleSpreadsheetProvider();
-      await provider.authenticate(code);
-      await provider.append(spreadsheetId, [titles, rows]);
-    
+      const data = csvProvider().toCsv(parsedOrders);
+      await fs.promises.writeFile(upload.path, JSON.stringify(data));
+      
     }
   }
 }

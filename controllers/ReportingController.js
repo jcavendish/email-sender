@@ -2,10 +2,10 @@ const createReportService = require("../services/CreateReportService");
 
 module.exports = {
   async create(request, response) {
-    const { code, restaurantKey, spreadsheetId } = request.body;
+    const { restaurantKey } = request.params;
 
     try {
-      await createReportService().execute(code, spreadsheetId, restaurantKey);
+      await createReportService().execute(restaurantKey);
       return response.send();
     } catch (err) {
       console.log(err);
