@@ -1,8 +1,6 @@
 'use strict';
 
 const {google} = require('googleapis');
-const opn = require('open');
-const { sheets } = require('googleapis/build/src/apis/sheets');
 const { 
   client_id,
   client_secret,
@@ -52,6 +50,7 @@ function googleSpreadsheetProvider() {
         }
       }
 
+      const sheets = google.sheets("v4");
       await sheets.spreadsheets.create({
         resource,
         fields: 'spreadsheetId',
@@ -59,8 +58,10 @@ function googleSpreadsheetProvider() {
         if (err) {
           // Handle error.
           console.log(err);
+          return;
         } else {
           console.log(`Spreadsheet ID: ${spreadsheet.spreadsheetId}`);
+          return spreadsheet.spreadsheetId;
         }
       });
     }
