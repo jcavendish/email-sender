@@ -50,7 +50,6 @@ function createOrderService() {
         }
       })
 
-      console.log(parsedOrders)
       const titles = ['Name', 'Price', 'Total Item Price', 'Quantity', 'Options', 'Total'];
       const rows = parsedOrders.map(order => {
         return [
@@ -63,7 +62,7 @@ function createOrderService() {
         ]
       });
       const provider = googleSpreadsheetProvider();
-      return await provider.authenticate(null, provider.append(spreadsheetId, [titles, rows]));
+      await provider.authenticate(null, provider.append(spreadsheetId, [titles, rows]));
  //     return csvProvider().toCsv(parsedOrders);      
     }
   }
