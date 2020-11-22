@@ -32,8 +32,8 @@ function googleSpreadsheetProvider() {
   });
 
   return {
-    open() {
-      opn(authorizeUrl, {wait: true});
+    init() {
+      return authorizeUrl;
     },
     authenticate(code) {
       client.getToken(code, (err, tokens) => {

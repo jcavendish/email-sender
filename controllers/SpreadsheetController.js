@@ -2,8 +2,7 @@ const googleSpreadsheetProvider = require('../providers/GoogleSpreadsheetProvide
 
 module.exports = {
   init(request, response) {
-    googleSpreadsheetProvider().open();
-    return response.send();
+    return response.send(googleSpreadsheetProvider().init());
   },
   async create(request, response) {
     await googleSpreadsheetProvider().create(request.query.code);
