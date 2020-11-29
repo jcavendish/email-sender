@@ -19,7 +19,9 @@ module.exports = {
     try {
       const orders = await orderRepository().findByRestaurantKey(restaurantKey);
 
-      return response.send({ name: orders[0]?.restaurant_name });
+      return response.send({
+        name: orders[0] ? orders[0].restaurant_name : "",
+      });
     } catch (err) {
       console.log(err);
       return response.status(400).send("An error occurred");
