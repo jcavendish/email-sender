@@ -1,7 +1,7 @@
 const mongoose = require("../connection");
 
 const orderSchema = new mongoose.Schema({
-  id:  Number,
+  id: Number,
   accepted_at: String,
   updated_at: String,
   restaurant_id: Number,
@@ -18,7 +18,6 @@ const orderSchema = new mongoose.Schema({
   total_price: Number,
   sub_total_price: Number,
   tax_value: Number,
-  client_last_name: String,
   items: [
     {
       id: Number,
@@ -33,11 +32,11 @@ const orderSchema = new mongoose.Schema({
           group_name: String,
           type_id: Number,
           quantity: Number,
-          price: Number
-        }
-      ]
-    }
-  ]
+          price: Number,
+        },
+      ],
+    },
+  ],
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+module.exports = mongoose.model("Order", orderSchema);
