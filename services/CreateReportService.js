@@ -3,16 +3,17 @@ const fns = require("date-fns");
 
 function createOrderService() {
   return {
-    async execute(restaurantKey, { day, month, year }) {
+    async execute(restaurantKey, { startDate, endDate }) {
       let orders = null;
-      if (day && month && year) {
-        const startDate = new Date(year, month, day, 6);
-        const endDate = fns.subSeconds(fns.addDays(startDate, 1), 1);
+      if (startDate && endDate) {
         const formattedStartDate = fns.format(
-          startDate,
-          "yyyy-MM-dd'T'HH-mm-ss"
+          new Date(startDate),
+          "yyyy-MM-dd'T06-00-00'"
         );
-        const formattedEndDate = fns.format(endDate, "yyyy-MM-dd'T'HH-mm-ss");
+        const formattedEndDate = fns.format(
+          fns.addDays(new Date(endDate), 1),
+          "yyyy-MM-dd'T'05-59-59"
+        );
         console.log(formattedStartDate, formattedEndDate);
 
         orders = await orderRepository().findByRestaurantKeyAndDate(

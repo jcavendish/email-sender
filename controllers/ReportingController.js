@@ -3,12 +3,11 @@ const createReportService = require("../services/CreateReportService");
 module.exports = {
   async index(request, response) {
     const { restaurantKey } = request.params;
-    const { day, month, year } = request.query;
+    const { startDate, endDate } = request.query;
     try {
       const report = await createReportService().execute(restaurantKey, {
-        day,
-        month,
-        year,
+        startDate,
+        endDate,
       });
       return response.send(report);
     } catch (err) {
