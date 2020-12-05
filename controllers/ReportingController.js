@@ -1,4 +1,6 @@
+const { response } = require("express");
 const createReportService = require("../services/CreateReportService");
+const deleteReportFilesService = require("../services/DeleteReportFilesService");
 const uploadReportCsvService = require("../services/UploadReportCsvService");
 
 module.exports = {
@@ -33,6 +35,15 @@ module.exports = {
     } catch (err) {
       console.log(err);
       return response.status(400).send("Error generating the report");
+    }
+  },
+  async delete(request, response) {
+    try {
+      await deleteReportFilesService().execute();
+      return response.send();
+    } catch (err) {
+      console.log(err);
+      return response.status(400).send();
     }
   },
 };

@@ -25,6 +25,7 @@ app.post("/restaurants", restaurantController.create);
 app.get("/restaurants/:restaurantKey", restaurantController.find);
 app.post("/restaurants/:restaurantKey/reports", reportingController.create);
 app.get("/restaurants/:restaurantKey/reports", reportingController.index);
+app.delete("/restaurants/:restaurantKey/reports", reportingController.delete);
 app.post("/restaurants/:key/orders", restaurantOrderController.index);
 
 //create end point
