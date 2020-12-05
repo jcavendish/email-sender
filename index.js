@@ -23,6 +23,7 @@ const port = process.env.PORT || 4000;
 app.post("/orders", orderController.create);
 app.post("/restaurants", restaurantController.create);
 app.get("/restaurants/:restaurantKey", restaurantController.find);
+app.post("/restaurants/:restaurantKey/reports", reportingController.create);
 app.get("/restaurants/:restaurantKey/reports", reportingController.index);
 app.post("/restaurants/:key/orders", restaurantOrderController.index);
 
