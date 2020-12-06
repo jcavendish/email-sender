@@ -1,14 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const upload = require("../config/upload");
+const s3StorageProvider = require("../providers/S3StorageProvider");
 
 function deleteReportFilesService() {
   return {
     async execute() {
-      const files = await fs.promises.readdir(upload.path);
-      for (const file of files) {
-        fs.promises.unlink(path.join(upload.path, file));
-      }
+      s3StorageProvider().deleteFile();
     },
   };
 }

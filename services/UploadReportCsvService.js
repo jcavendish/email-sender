@@ -2,6 +2,7 @@ const { format } = require("date-fns");
 const fs = require("fs");
 const upload = require("../config/upload");
 const csvProvider = require("../providers/CsvProvider");
+const s3StorageProvider = require("../providers/S3StorageProvider");
 const orderRepository = require("../repositories/OrderRepository");
 
 function uploadReportCsvService() {
@@ -20,9 +21,13 @@ function uploadReportCsvService() {
         "'-'dd-MM-yyyy"
       )}${format(new Date(endDate), "'-to-'dd-MM-yyyy")}.csv`;
 
-      await fs.promises.writeFile(`${upload.path}/${fileName}`, csv, "utf-8");
+      await s3StorageProvider().storeFile({
+        fileName,
+        contentType: "text/csv",
+        fileContent: csv,
+      });
 
-      return `${process.env.BASE_URL}/files/${fileName}`;
+      return `${process.env.AWS_BUCKET_URL}/${fileName}`;
     },
   };
 }
